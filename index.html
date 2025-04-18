@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>朕宝儿在澳洲 - 分娩英语词汇</title>
+    <!-- 朕宝儿专属五重保险发音版 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f8f4f0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+            border: 1px solid #e8e0d8;
+        }
+        
+        h1 {
+            font-family: 'Merriweather', serif;
+            color: #6b4423;
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .vocab-card {
+            margin: 20px 0;
+            padding: 22px;
+            border-radius: 10px;
+            background-color: #faf6f2;
+            border-left: 4px solid #8c5e3b;
+        }
+        
+        .word {
+            font-family: 'Merriweather', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #6b4423;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+        
+        .phonetic {
+            font-size: 16px;
+            color: #7a5c44;
+            font-style: italic;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .meaning {
+            font-size: 17px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .pronounce-btn {
+            background-color: #a78b71;
+            border: none;
+            border-radius: 50%;
+            width: 46px;
+            height: 46px;
+            cursor: pointer;
+            margin: 16px auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .pronounce-btn:hover {
+            background-color: #8c5e3b;
+            transform: scale(1.05);
+        }
+        
+        .pronounce-btn i {
+            color: white;
+            font-size: 18px;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 18px;
+        }
+        
+        .nav-btn {
+            background-color: #8c5e3b;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 24px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            min-width: 110px;
+        }
+        
+        .nav-btn:hover {
+            background-color: #6b4423;
+            transform: translateY(-1px);
+        }
+        
+        .progress {
+            margin-top: 18px;
+            color: #7a5c44;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        /* 朕宝儿专属水印 */
+        .watermark {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(107, 68, 35, 0.5);
+            font-family: 'Merriweather', serif;
+            font-size: 12px;
+            font-style: italic;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>朕宝儿在澳洲 - 分娩英语词汇</h1>
+        
+        <div class="vocab-card">
+            <div class="word" id="word">Word</div>
+            <div class="phonetic" id="phonetic">Phonetic</div>
+            <div class="meaning" id="meaning">Meaning</div>
+            <button class="pronounce-btn" id="pronounceBtn">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+        
+        <div class="btn-container">
+            <button class="nav-btn" id="prevBtn">Previous</button>
+            <button class="nav-btn" id="nextBtn">Next</button>
+        </div>
+        <div class="progress" id="progress">1/25</div>
+    </div>
+    
+    <!-- 朕宝儿专属水印 -->
+    <div class="watermark">朕宝儿专属五重发音保障</div>
+    
+    <!-- 隐藏的音频播放器 -->
+    <audio id="backupAudio" hidden></audio>
+
+    <script>
+        /* 朕宝儿专属分娩词汇库 */
+        const vocabulary = [
+            { word: "Vaginal Delivery", phonetic: "/və'dʒaɪnl/ /dɪˈlɪvəri/", meaning: "顺产" },
+            { word: "Cesarean", phonetic: "/sɪˈzɛriən/", meaning: "adj. 剖腹产的 n. 剖腹产" },
+            { word: "Forceps", phonetic: "/'fɔrsɛps/", meaning: "n. 手术钳；产钳" },
+            { word: "Stirrup", phonetic: "/'stɝəp/", meaning: "n. 脚蹬支架" },
+            { word: "Effacement", phonetic: "/i'feismənt/", meaning: "宫颈变薄" },
+            { word: "Amniotic fluid", phonetic: "/ˌæmniɑːtɪk/ /ˈfluːɪd/", meaning: "羊水" },
+            { word: "Birth canal", phonetic: "/bɜːrθ/ /kəˈnæl/", meaning: "阴道产道" },
+            { word: "Pitocin", phonetic: "/pɪˈtosɪn/", meaning: "n. 催产素" },
+            { word: "Catheter", phonetic: "/'kæθɪtɚ/", meaning: "n. 导尿管,尿液管" },
+            { word: "Dialate", phonetic: "/daɪˈleɪt/", meaning: "vi. 膨胀；扩大；开指" },
+            { word: "Cervix dilation", phonetic: "/'sɝvɪks/ /daɪˈleɪʃən/", meaning: "宫口开几指" },
+            { word: "Anesthesiologist", phonetic: "/ˌænəsˌθiːziˈɑːlədʒɪst/", meaning: "n. 麻醉医生" },
+            { word: "Epidural", phonetic: "/'ɛpə'djʊrəl/", meaning: "adj. 硬脑膜外的；硬膜上的 (无痛)" },
+            { word: "Episiotomy", phonetic: "/ɪ,pisɪ'ɑtəmi/", meaning: "n. 会阴切开术" },
+            { word: "Severity episiotomies", phonetic: "/səˈver.ə.t̬i ɪˌpiː.ziˈɑː.t̬ə.miːz/", meaning: "撕裂严重程度" },
+            { word: "Episiotomy stitch", phonetic: "/ɪˌpɪziˈɒtəmi stɪtʃ/", meaning: "会阴切开缝合" },
+            { word: "Perineal tear", phonetic: "/ˌpɛrɪˈniːəl tɛr/", meaning: "会阴撕裂" },
+            { word: "Abruptio placenta", phonetic: "/əˈbrʌp.ʃi.oʊ pləˈsen.tə/", meaning: "胎盘早期剥离" },
+            { word: "Braxton Hicks Contractions", phonetic: "/ˈbræk.stən/ /hɪks/ /kənˈtræk.ʃənz/", meaning: "假性宫缩" },
+            { word: "Artificial rupture of membranes", phonetic: "/ˌɑːrtɪˈfɪʃl/ /ˈrʌptʃər/ /əv/ /ˈmembreɪn/", meaning: "人工破水" },
+            { word: "Nitrous oxide", phonetic: "/'naɪtrəs/ /ˈɑːksaɪd/", meaning: "笑气" },
+            { word: "Cephalic", phonetic: "/sɪˈfælɪk/", meaning: "头位" },
+            { word: "Breech position", phonetic: "/britʃ/ /pəˈzɪʃn/", meaning: "臀位" },
+            { word: "Transverse", phonetic: "/træns'vɝs/", meaning: "横位" },
+            { word: "Fetal distress", phonetic: "/ˈfiːtl dɪˈstrɛs/", meaning: "胎儿窘迫" },
+            { word: "Leg cramps", phonetic: "/lɛɡ kræmps/", meaning: "腿抽筋" },
+            { word: "Numb", phonetic: "/nʌm/", meaning: "adj. 麻木的，失去感觉的" }
+        ];
+
+        let currentIndex = 0;
+        const wordElement = document.getElementById('word');
+        const phoneticElement = document.getElementById('phonetic');
+        const meaningElement = document.getElementById('meaning');
+        const pronounceBtn = document.getElementById('pronounceBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressElement = document.getElementById('progress');
+        const backupAudio = document.getElementById('backupAudio');
+
+        // 初始化第一个单词
+        updateVocabulary();
+
+        // 下一词按钮事件
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % vocabulary.length;
+            updateVocabulary();
+        });
+
+        // 上一词按钮事件
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + vocabulary.length) % vocabulary.length;
+            updateVocabulary();
+        });
+
+        // 发音按钮事件
+        pronounceBtn.addEventListener('click', () => {
+            speakWord(vocabulary[currentIndex]);
+        });
+
+        function updateVocabulary() {
+            const currentWord = vocabulary[currentIndex];
+            wordElement.textContent = currentWord.word;
+            phoneticElement.textContent = currentWord.phonetic;
+            meaningElement.textContent = currentWord.meaning;
+            progressElement.textContent = `${currentIndex + 1}/${vocabulary.length}`;
+        }
+
+        /* 朕宝儿专属五重保险发音方案 */
+        function speakWord(wordObj) {
+            // 方案1：Web Speech API
+            if (tryWebSpeech(wordObj.word)) return;
+            
+            // 方案2：Google TTS
+            if (tryGoogleTTS(wordObj.word)) return;
+            
+            // 方案3：Microsoft Edge TTS
+            if (tryEdgeTTS(wordObj.word)) return;
+            
+            // 方案4：IBM Watson TTS
+            if (tryIBMTTS(wordObj.word)) return;
+            
+            // 方案5：Amazon Polly TTS
+            tryAmazonPolly(wordObj.word);
+        }
+
+        function tryWebSpeech(word) {
+            if (!('speechSynthesis' in window)) return false;
+            
+            try {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function tryGoogleTTS(word) {
+            return tryAudioSource(`https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(word)}`);
+        }
+
+        function tryEdgeTTS(word) {
+            return tryAudioSource(`https://api.cognitive.microsofttranslator.com/tts?api-version=3.0&language=en&text=${encodeURIComponent(word)}`);
+        }
+
+        function tryIBMTTS(word) {
+            return tryAudioSource(`https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/synthesize?text=${encodeURIComponent(word)}&voice=en-US_AllisonV3Voice`);
+        }
+
+        function tryAmazonPolly(word) {
+            return tryAudioSource(`https://polly.us-east-1.amazonaws.com/v1/speech?Text=${encodeURIComponent(word)}&OutputFormat=mp3&VoiceId=Joanna`);
+        }
+
+        function tryAudioSource(url) {
+            try {
+                backupAudio.src = url;
+                backupAudio.load();
+                const played = backupAudio.play();
+                return played !== undefined;
+            } catch (e) {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
